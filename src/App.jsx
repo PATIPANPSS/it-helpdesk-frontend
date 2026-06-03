@@ -25,8 +25,18 @@ function App() {
         <div className="flex gap-6 mx-auto max-w-7xl">
           <h1 className="text-xl font-bold text-blue-400 mr-4">IT Helpdesk</h1>
 
-          <Link to='/' className="px-3 py-1 font-medium transition-colors rounded hover:bg-gray-700">แจ้งปัญหา (ฝั่งผู้ใช้)</Link>
-          <Link to='dashboard' className="px-3 py-1 font-medium transition-colors rounded hover:bg-gray-700">จัดการปัญหา (ฝั่งไอที)</Link>
+          <Link
+            to="/"
+            className="px-3 py-1 font-medium transition-colors rounded hover:bg-gray-700"
+          >
+            แจ้งปัญหา (ฝั่งผู้ใช้)
+          </Link>
+          <Link
+            to="/dashboard"
+            className="px-3 py-1 font-medium transition-colors rounded hover:bg-gray-700"
+          >
+            จัดการปัญหา (ฝั่งไอที)
+          </Link>
         </div>
       </nav>
 
