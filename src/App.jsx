@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import CreateTicket from "./components/CreateTicket";
 import ProtectedRoute from "./ProtectedRoute";
+import MyTickets from "./components/MyTickets";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -48,6 +49,13 @@ function App() {
                 className="px-3 py-1 font-medium transition-colors rounded hover:bg-gray-700"
               >
                 แจ้งซ่อม
+              </Link>
+
+              <Link
+                to="/my-tickets"
+                className="px-3 py-1 font-medium transition-colors rounded hover:bg-gray-700"
+              >
+                ประวัติของฉัน
               </Link>
 
               {role === "admin" && (
@@ -118,6 +126,17 @@ function App() {
             <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>
+          }
+        />
+
+        <Route 
+          path="/my-tickets"
+          element={
+            isAuthenticated ? (
+              <MyTickets />
+            ) : (
+              <Navigate to='/login' replace />
+            )
           }
         />
       </Routes>
