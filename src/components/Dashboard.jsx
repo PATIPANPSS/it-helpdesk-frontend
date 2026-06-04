@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
-function Dashboard({ onLogout }) {
+function Dashboard() {
   const [tickets, setTickets] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -122,12 +122,6 @@ function Dashboard({ onLogout }) {
           <h1 className="text-3xl font-bold text-gray-800">
             รายการแจ้งซ่อม (IT Helpdesk)
           </h1>
-          <button
-            onClick={onLogout}
-            className="px-4 py-2 font-semibold text-white transition-all bg-red-500 rounded-lg hover:bg-red-600"
-          >
-            ออกจากระบบ
-          </button>
         </div>
 
         <div className="mb-4">

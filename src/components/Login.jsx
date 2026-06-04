@@ -19,6 +19,7 @@ function Login({ onLoginSuccess }) {
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
+        localStorage.setItem('role', data.role);
         alert("ล็อกอินสำเร็จ!");
         onLoginSuccess();
       } else {

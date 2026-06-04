@@ -1,48 +1,125 @@
 import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import CreateTicket from "./components/CreateTicket";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
-  const [isAuthentication, setIsAutentication] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [role, setRole] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const storedRole = localStorage.getItem("role");
+
     if (token) {
-      setIsAutentication(true);
+      setIsAuthenticated(true);
+      setRole(storedRole);
     }
   }, []);
 
+  const handleLoginSuccess = () => {
+    const currentRole = localStorage.getItem("role");
+    setIsAuthenticated(true);
+    setRole(currentRole);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setIsAutentication(false);
+    localStorage.removeItem("role");
+    setIsAuthenticated(false);
+    setRole(null);
+    window.location.href = "/login";
   };
 
   return (
     <BrowserRouter>
-      <nav className="p-4 text-white bg-gray-800 shadow-md">
-        <div className="flex gap-6 mx-auto max-w-7xl">
-          <h1 className="text-xl font-bold text-blue-400 mr-4">IT Helpdesk</h1>
+      {isAuthenticated && (
+        <nav className="p-4 bg-gray-800 text-white shadow-md">
+          <div className="flex items-center justify-between mx-auto max-w-7xl">
+            <div className="flex items-center gap-6">
+              <h1 className="mr-4 text-xl font-bold text-blue-400">
+                IT Helpdesk
+              </h1>
 
-          <Link
-            to="/"
-            className="px-3 py-1 font-medium transition-colors rounded hover:bg-gray-700"
-          >
-            แจ้งปัญหา (ฝั่งผู้ใช้)
-          </Link>
-          <Link
-            to="/dashboard"
-            className="px-3 py-1 font-medium transition-colors rounded hover:bg-gray-700"
-          >
-            จัดการปัญหา (ฝั่งไอที)
-          </Link>
-        </div>
-      </nav>
+              <Link
+                to="/ticket"
+                className="px-3 py-1 font-medium transition-colors rounded hover:bg-gray-700"
+              >
+                แจ้งซ่อม
+              </Link>
+
+              {role === "admin" && (
+                <Link
+                  to="/dashboard"
+                  className="px-3 py-1 font-medium transition-colors rounded hover:bg-gray-700"
+                >
+                  รับเรื่อง
+                </Link>
+              )}
+            </div>
+
+            <button
+              onClick={handleLogout}
+              className="px-4 py-1 text-sm font-medium text-white bg-red-500 rounded transition-colors hover:bg-red-600"
+            >
+              Logout
+            </button>
+          </div>
+        </nav>
+      )}
 
       <Routes>
-        <Route path="/" element={<CreateTicket />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? (
+              role === "admin" ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Navigate to="/ticket" replace />
+              )
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/login"
+          element={
+            isAuthenticated ? (
+              role === "admin" ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Navigate to="/ticket" replace />
+              )
+            ) : (
+              <Login onLoginSuccess={handleLoginSuccess} />
+            )
+          }
+        />
+
+        <Route
+          path="/ticket"
+          element={
+            isAuthenticated ? (
+              <CreateTicket />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
