@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast,{Toaster} from "react-hot-toast";
 
 function Login({ onLoginSuccess }) {
   const [username, setUsername] = useState("");
@@ -20,14 +21,14 @@ function Login({ onLoginSuccess }) {
       if (response.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem('role', data.role);
-        alert("ล็อกอินสำเร็จ!");
+        toast.success("ล็อกอินสำเร็จ!");
         onLoginSuccess();
       } else {
-        alert(data.message || "รหัสผ่านไม่ถูกต้อง");
+        toast.error(data.message || "รหัสผ่านไม่ถูกต้อง");
       }
     } catch (error) {
       console.error("เกิดข้อผิดพลาดในการเชื่อมต่อ:", error);
-      alert("ไม่สามารถติดต่อเซิร์ฟเวอร์ได้");
+      toast.error("ไม่สามารถติดต่อเซิร์ฟเวอร์ได้");
     }
   };
 
