@@ -5,6 +5,7 @@ import Dashboard from "./components/Dashboard";
 import CreateTicket from "./components/CreateTicket";
 import ProtectedRoute from "./ProtectedRoute";
 import MyTickets from "./components/MyTickets";
+import AdminUsers from "./components/AdminUsers";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -24,6 +25,12 @@ function App() {
     const currentRole = localStorage.getItem("role");
     setIsAuthenticated(true);
     setRole(currentRole);
+
+    if (currentRole === "admin" || currentRole === "it_support") {
+      window.location.href = "/dashboard";
+    } else {
+      window.location.href = "/ticket";
+    }
   };
 
   const handleLogout = () => {
@@ -44,26 +51,38 @@ function App() {
                 IT Helpdesk
               </h1>
 
-              <Link
-                to="/ticket"
-                className="px-3 py-1 font-medium transition-colors rounded hover:bg-gray-700"
-              >
-                แจ้งซ่อม
-              </Link>
+              {(role === "user" || role === "admin") && (
+                <>
+                  <Link
+                    to="/ticket"
+                    className="px-3 py-1 font-medium transition-colors rounded hover:bg-gray-700"
+                  >
+                    แจ้งซ่อม
+                  </Link>
+                  <Link
+                    to="/my-tickets"
+                    className="px-3 py-1 font-medium transition-colors rounded hover:bg-gray-700"
+                  >
+                    ประวัติของฉัน
+                  </Link>
+                </>
+              )}
 
-              <Link
-                to="/my-tickets"
-                className="px-3 py-1 font-medium transition-colors rounded hover:bg-gray-700"
-              >
-                ประวัติของฉัน
-              </Link>
-
-              {role === "admin" && (
+              {(role === "it_support" || role === "admin") && (
                 <Link
                   to="/dashboard"
                   className="px-3 py-1 font-medium transition-colors rounded hover:bg-gray-700"
                 >
                   รับเรื่อง
+                </Link>
+              )}
+
+              {role === "admin" && (
+                <Link
+                  to="/admin/users"
+                  className="px-3 py-1 font-medium text-yellow-400 transition-colors border border-yellow-400 rounded hover:bg-yellow-400 hover:text-gray-900"
+                >
+                  จัดการผู้ใช้งาน
                 </Link>
               )}
             </div>
@@ -83,7 +102,7 @@ function App() {
           path="/"
           element={
             isAuthenticated ? (
-              role === "admin" ? (
+              role === "admin" || role === "it_support" ? (
                 <Navigate to="/dashboard" replace />
               ) : (
                 <Navigate to="/ticket" replace />
@@ -98,7 +117,7 @@ function App() {
           path="/login"
           element={
             isAuthenticated ? (
-              role === "admin" ? (
+              role === "admin" || role === "it_support" ? (
                 <Navigate to="/dashboard" replace />
               ) : (
                 <Navigate to="/ticket" replace />
@@ -129,13 +148,20 @@ function App() {
           }
         />
 
-        <Route 
+        <Route
           path="/my-tickets"
           element={
-            isAuthenticated ? (
-              <MyTickets />
+            isAuthenticated ? <MyTickets /> : <Navigate to="/login" replace />
+          }
+        />
+
+        <Route
+          path="/admin/users"
+          element={
+            isAuthenticated && role === "admin" ? (
+              <AdminUsers />
             ) : (
-              <Navigate to='/login' replace />
+              <Navigate to="/" replace />
             )
           }
         />
