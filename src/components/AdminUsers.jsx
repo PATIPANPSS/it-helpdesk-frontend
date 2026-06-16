@@ -8,7 +8,7 @@ function AdminUsers() {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3000/api/users", {
+      const response = await fetch("https://it-helpdesk-backend-845i.onrender.com/api/users", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -37,7 +37,7 @@ function AdminUsers() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3000/api/users/${userId}/role`,
+        `https://it-helpdesk-backend-845i.onrender.com/api/users/${userId}/role`,
         {
           method: "PUT",
           headers: {

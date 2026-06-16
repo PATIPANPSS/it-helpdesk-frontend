@@ -12,7 +12,7 @@ function CreateTicket() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3000/api/tickets", {
+      const response = await fetch("https://it-helpdesk-backend-845i.onrender.com/api/tickets", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

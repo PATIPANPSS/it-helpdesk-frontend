@@ -12,7 +12,7 @@ function MyTickets() {
   const fetchMyTickets = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3000/api/tickets", {
+      const response = await fetch("https://it-helpdesk-backend-845i.onrender.com/api/tickets", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ function MyTickets() {
   const fetchTicketDetails = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:3000/api/tickets/${id}`, {
+      const response = await fetch(`https://it-helpdesk-backend-845i.onrender.com/api/tickets/${id}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -61,7 +61,7 @@ function MyTickets() {
       const ticketId = selectedTicket.id;
 
       const response = await fetch(
-        `http://localhost:3000/api/tickets/${ticketId}/comments`,
+        `https://it-helpdesk-backend-845i.onrender.com/api/tickets/${ticketId}/comments`,
         {
           method: "POST",
           headers: {

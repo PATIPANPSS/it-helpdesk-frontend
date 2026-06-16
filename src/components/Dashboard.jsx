@@ -18,7 +18,7 @@ function Dashboard() {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        `http://localhost:3000/api/tickets?page=${page}&limit=${limit}`,
+        `https://it-helpdesk-backend-845i.onrender.com/api/tickets?page=${page}&limit=${limit}`,
         {
           method: "GET",
           headers: {
@@ -40,7 +40,7 @@ function Dashboard() {
   const fetchTicketDetails = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:3000/api/tickets/${id}`, {
+      const response = await fetch(`https://it-helpdesk-backend-845i.onrender.com/api/tickets/${id}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -67,7 +67,7 @@ function Dashboard() {
       const ticketId = selectedTicket.id;
 
       const statusResponse = await fetch(
-        `http://localhost:3000/api/tickets/${ticketId}/status`,
+        `https://it-helpdesk-backend-845i.onrender.com/api/tickets/${ticketId}/status`,
         {
           method: "PUT",
           headers: {
@@ -82,7 +82,7 @@ function Dashboard() {
 
       if (commentText.trim() !== "") {
         const commentResponse = await fetch(
-          `http://localhost:3000/api/tickets/${ticketId}/comments`,
+          `https://it-helpdesk-backend-845i.onrender.com/api/tickets/${ticketId}/comments`,
           {
             method: "POST",
             headers: {
